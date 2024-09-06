@@ -8,10 +8,12 @@ jobs:
   my_job:
     runs-on: ubuntu-latest
     container:
-      image: rockylinux:latest
+      image: rockylinux:9
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Install deps
+        run: dnf install -y rpm-build
       - name: Build package
         run: extra/ias.rpmbuild.sh
       - name: Release
