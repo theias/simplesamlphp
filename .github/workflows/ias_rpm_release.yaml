@@ -2,7 +2,10 @@
 # Builds our RPM for tagged releases only
 name: ias_rpm_release
 
-on: 'push'
+on:
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   my_job:
