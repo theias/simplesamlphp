@@ -12,12 +12,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Run a script
+      - name: Build package
         run: extra/ias.rpmbuild.sh
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            rpmbuild/RPMS/noarch/simplesamlphp-${{ name }}-1.noarch.rpm
-            rpmbuild/SOURCES/noarch/simplesamlphp-${{ name }}.tar.gz
+            rpmbuild/RPMS/noarch/simplesamlphp-${{ github.ref_name }}-1.noarch.rpm
+            rpmbuild/SOURCES/noarch/simplesamlphp-${{ github.ref_name }}.tar.gz
