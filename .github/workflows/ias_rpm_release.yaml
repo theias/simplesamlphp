@@ -1,4 +1,9 @@
 ---
+# Builds our RPM for tagged releases only
+name: ias_rpm_release
+
+on: 'push'
+
 jobs:
   my_job:
     runs-on: ubuntu-latest
