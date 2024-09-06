@@ -23,11 +23,11 @@ jobs:
       - name: Install deps
         run: dnf install -y rpm-build
       - name: Build package
-        run: bash -x extra/ias.rpmbuild.sh ${{ github.ref_name }}
+        run: bash -x extra/ias.rpmbuild.sh ${{ github.ref }}
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            rpmbuild/RPMS/noarch/simplesamlphp-${{ github.ref_name }}-1.noarch.rpm
-            rpmbuild/SOURCES/noarch/simplesamlphp-${{ github.ref_name }}.tar.gz
+            rpmbuild/RPMS/noarch/simplesamlphp-${{ github.ref }}-1.noarch.rpm
+            rpmbuild/SOURCES/noarch/simplesamlphp-${{ github.ref }}.tar.gz
