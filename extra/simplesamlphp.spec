@@ -1,6 +1,6 @@
 %define name      simplesamlphp
 %define summary   SAML IDP/SP written in PHP
-%define version   dev
+%define version   v2.3.0
 %define release   1
 %define license   LGPL 2.1
 %define group     Networking/WWW
@@ -18,7 +18,7 @@ License:   %{license}
 Group:     %{group}
 Source0:   %{source}
 BuildArch: noarch
-Requires:  httpd, mod_ssl, mod_php, php-ldap, php-xml, policycoreutils-python
+Requires:  php(language) >= 7.4
 Requires(pre): shadow-utils
 Provides:  %{name}
 URL:       %{url}
@@ -69,15 +69,13 @@ tar cf - . | (cd %{buildroot}%{_prefix}simplesamlphp; tar xfp -)
 %defattr(-,root,root)
 /var/lib/simplesamlphp/
 %dir %attr(0750, root,apache) /var/lib/simplesamlphp/config
-%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/acl.php
-%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/authsources.php
-%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/config.php
+%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/acl.php.dist
+%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/authsources.php.dist
+%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/config.php.dist
 %dir %attr(0750, root,apache) /var/lib/simplesamlphp/metadata
-%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/adfs-idp-hosted.php
-%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/adfs-sp-remote.php
-%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/saml20-idp-hosted.php
-%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/saml20-idp-remote.php
-%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/saml20-sp-remote.php
+%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/saml20-idp-hosted.php.dist
+%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/saml20-idp-remote.php.dist
+%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/saml20-sp-remote.php.dist
 %dir %attr(0770, root, apache) /var/lib/simplesamlphp/log
 %dir %attr(0770, root, apache) /var/lib/simplesamlphp/data
 %dir %attr(0750, root, apache) /var/lib/simplesamlphp/cert
