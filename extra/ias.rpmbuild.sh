@@ -3,7 +3,6 @@ set -eu
 set -o pipefail
 
 vers="${1:-$(git tag | tail -n1)}"
-git checkout "${vers}"
 mkdir -p ./rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 mkdir -p "./simplesamlphp-${vers}"
 
