@@ -2,7 +2,7 @@
 
 This is the IAS fork of SimpleSAMLphp that includes workflows to build an RPM package of tagged releases.
 
-It includes an alternate, working RPM spec file at `extra/simplesamlphp.spec`, and workflows to release RPMs created by that spec.
+It includes an alternate, working RPM spec file at `extra/simplesamlphp.spec`, a build script, and workflows to release RPMs created by that spec.
 
 Our workflow should be to keep this branch in sync with upstream and to let Actions build new tagged releases.
 

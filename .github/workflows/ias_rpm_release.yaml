@@ -1,0 +1,18 @@
+---
+jobs:
+  my_job:
+    runs-on: ubuntu-latest
+    container:
+      image: rockylinux:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run a script
+        run: extra/ias.rpmbuild.sh
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            rpmbuild/RPMS/noarch/simplesamlphp-${{ name }}-1.noarch.rpm
+            rpmbuild/SOURCES/noarch/simplesamlphp-${{ name }}.tar.gz
