@@ -5,7 +5,7 @@ name: ias_rpm_release
 on: 'push'
 
 jobs:
-  my_job:
+  rpmbuild:
     runs-on: ubuntu-latest
     container:
       image: rockylinux:9
@@ -22,6 +22,9 @@ jobs:
 
       - name: Install deps
         run: dnf install -y rpm-build
+
+      - run: ls -R rpmbuild
+
       - name: Build package
         run: bash -x extra/ias.rpmbuild.sh ${{ github.ref_name }}
       - name: Release
