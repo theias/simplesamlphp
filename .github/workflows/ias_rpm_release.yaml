@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install deps
-        run: dnf install -y rpm-build git
+        run: dnf install -y rpm-build
       - name: Build package
         run: bash -x extra/ias.rpmbuild.sh ${{ github.ref_name }}
       - name: Release
