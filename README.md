@@ -1,3 +1,7 @@
+# IAS Fork
+
+This is the IAS fork of SimpleSAMLphp which includes workflows to build an RPM package of tagged releases.
+
 # SimpleSAMLphp
 
 ![Build Status](https://github.com/simplesamlphp/simplesamlphp/actions/workflows/php.yml/badge.svg)
