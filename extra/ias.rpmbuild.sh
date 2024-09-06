@@ -10,4 +10,5 @@ cp -a . "/tmp/simplesamlphp-${vers}/"
 tar -cf ./rpmbuild/SOURCES/"simplesamlphp-${vers}.tar.gz" "/tmp/simplesamlphp-${vers}"
 
 cp extra/simplesamlphp.spec rpmbuild/SPECS/simplesamlphp.spec
+ls -R rpmbuild
 rpmbuild --define "_topdir ${PWD}/rpmbuild"  -ba rpmbuild/SPECS/simplesamlphp.spec
