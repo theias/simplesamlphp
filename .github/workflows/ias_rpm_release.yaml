@@ -15,7 +15,7 @@ jobs:
       - name: Install deps
         run: dnf install -y rpm-build
       - name: Build package
-        run: extra/ias.rpmbuild.sh
+        run: bash -x extra/ias.rpmbuild.sh
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
