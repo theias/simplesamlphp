@@ -17,17 +17,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Get the tag name
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: echo "VERS=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
       - name: Install deps
         run: dnf install -y rpm-build
       - name: Build package
-        run: bash -x extra/ias.rpmbuild.sh $TAG_NAME
+        run: bash -x extra/ias.rpmbuild.sh $VERS
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            rpmbuild/RPMS/noarch/simplesamlphp-${{ env.TAG_NAME }}-1.noarch.rpm
-            rpmbuild/SRPMS/simplesamlphp-${{ env.TAG_NAME }}-1.src.rpm
+            rpmbuild/RPMS/noarch/simplesamlphp-${{ env.VERS }}-1.noarch.rpm
+            rpmbuild/SRPMS/simplesamlphp-${{ env.VERS }}-1.src.rpm
 
 permissions:
   contents: write
