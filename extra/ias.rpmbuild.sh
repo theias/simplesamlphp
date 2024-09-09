@@ -14,4 +14,5 @@ cp extra/ias.simplesamlphp.spec rpmbuild/SPECS/simplesamlphp.spec
 sed -i "s/^%define version  .*\$/%define version   ${vers}/" rpmbuild/SPECS/simplesamlphp.spec
 ls -R rpmbuild
 fgrep '%define version' rpmbuild/SPECS/simplesamlphp.spec
-rpmbuild --define "_topdir ${PWD}/rpmbuild"  -ba rpmbuild/SPECS/simplesamlphp.spec
+rpmbuild -v --define "_topdir ${PWD}/rpmbuild"  -ba rpmbuild/SPECS/simplesamlphp.spec
+echo 'done!'
