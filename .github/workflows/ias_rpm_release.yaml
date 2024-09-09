@@ -27,7 +27,7 @@ jobs:
         with:
           files: |
             rpmbuild/RPMS/noarch/simplesamlphp-${{ env.TAG_NAME }}-1.noarch.rpm
-            rpmbuild/SRPMS/noarch/simplesamlphp-${{ env.TAG_NAME }}-1.src.rpm
+            rpmbuild/SRPMS/simplesamlphp-${{ env.TAG_NAME }}-1.src.rpm
 
 permissions:
   contents: write
