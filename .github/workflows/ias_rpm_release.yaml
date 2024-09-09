@@ -15,14 +15,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - run: echo $PWD
-      - run: ls
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-
       - name: Get the tag name
         run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       - name: Install deps
@@ -36,3 +28,6 @@ jobs:
           files: |
             rpmbuild/RPMS/noarch/simplesamlphp-${{ github.ref }}-1.noarch.rpm
             rpmbuild/SOURCES/noarch/simplesamlphp-${{ github.ref }}.tar.gz
+
+permissions:
+  contents: write

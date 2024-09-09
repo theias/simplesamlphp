@@ -13,6 +13,6 @@ tar -cf ./rpmbuild/SOURCES/"simplesamlphp-${vers}.tar.gz" -C /tmp "simplesamlphp
 cp extra/ias.simplesamlphp.spec rpmbuild/SPECS/simplesamlphp.spec
 sed -i "s/^%define version  .*\$/%define version   ${vers}/" rpmbuild/SPECS/simplesamlphp.spec
 ls -R rpmbuild
-fgrep '%define version' rpmbuild/SPECS/simplesamlphp.spec
-rpmbuild -v --define "_topdir ${PWD}/rpmbuild"  -ba rpmbuild/SPECS/simplesamlphp.spec 2>&1 | fgrep -v root/root
+grep -F '%define version' rpmbuild/SPECS/simplesamlphp.spec
+rpmbuild -v --define "_topdir ${PWD}/rpmbuild"  -ba rpmbuild/SPECS/simplesamlphp.spec
 echo 'done!'
