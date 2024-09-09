@@ -7,7 +7,7 @@ mkdir -p ./rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 mkdir -p "./simplesamlphp-${vers}"
 
 cp -a . "/tmp/simplesamlphp-${vers}/"
-tar -cf ./rpmbuild/SOURCES/"simplesamlphp-${vers}.tar.gz" "/tmp/simplesamlphp-${vers}"
+tar -cf ./rpmbuild/SOURCES/"simplesamlphp-${vers}.tar.gz" -C /tmp "simplesamlphp-${vers}"
 
 
 cp extra/ias.simplesamlphp.spec rpmbuild/SPECS/simplesamlphp.spec
