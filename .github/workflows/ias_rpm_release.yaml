@@ -26,8 +26,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            rpmbuild/RPMS/noarch/simplesamlphp-${{ github.ref }}-1.noarch.rpm
-            rpmbuild/SOURCES/noarch/simplesamlphp-${{ github.ref }}.tar.gz
+            rpmbuild/RPMS/noarch/simplesamlphp-${TAG_NAME}-1.noarch.rpm
+            rpmbuild/SOURCES/noarch/simplesamlphp-${TAG_NAME}.tar.gz
 
 permissions:
   contents: write
