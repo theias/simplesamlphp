@@ -2,12 +2,12 @@
 
 This is the IAS fork of SimpleSAMLphp that includes workflows to build an RPM package of tagged releases.
 
-It includes an alternate, working RPM spec file at `extra/simplesamlphp.spec`, a build script, and workflows to release RPMs created by that spec.
+It includes an alternate, working RPM spec file at `extra/simplesamlphp.spec`, a build script, and GitHub Actions workflows to release RPMs created by that spec.
 
 Our workflow should be to keep this branch in sync with upstream and to let Actions build new tagged releases.
 
 ```
-# After cloning:
+# To bring in changes from upstream
 git remote add upstream https://github.com/simplesamlphp/simplesamlphp.git
 git fetch --tags upstream
 git push --tags
