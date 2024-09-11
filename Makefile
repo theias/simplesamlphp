@@ -10,6 +10,6 @@ add-upstream:
 	fi
 
 PHONY: merge-upstream
-merge-upstream: add upstream
+merge-upstream: add-upstream
 	git fetch --tags upstream
 	git push --tags
