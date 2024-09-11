@@ -18,7 +18,6 @@ License:   %{license}
 Group:     %{group}
 Source0:   %{source}
 BuildArch: noarch
-Requires:  php(language) >= 7.4
 Requires(pre): shadow-utils
 Provides:  %{name}
 URL:       %{url}
