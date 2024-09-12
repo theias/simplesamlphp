@@ -82,6 +82,8 @@ jobs:
       - name: Build tarball
         run: |
           cd ..
+          pwd
+          ls -l
           cp -R  simplesamlphp "simplesamlphp-$VERSION"
           tar --owner 0 --group 0 -cvzf "/tmp/simplesamlphp-$VERSION-${{ matrix.version }}.tar.gz" \
           "simplesamlphp-$VERSION"
@@ -97,20 +99,29 @@ jobs:
       - name: Calculate SHA checksum (${{ matrix.version }})
         run: sha256sum "/tmp/simplesamlphp-$VERSION-${{ matrix.version }}.tar.gz"
 
-      - name: Run website build
-        if: |
-          startsWith(github.ref, 'refs/tags/v') &&
-          contains(github.ref, 'alpha') != true &&
-          contains(github.ref, 'beta') != true
-        uses: actions/github-script@v7
+  ias-release:
+    name: RPM release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    container:
+      image: rockylinux:9
+    needs: build
+    steps:
+      - name: Get artifacts from build steps
+        uses: actions/download-artifact@v4
         with:
-          # Token has to be generated on a user account that controls the docs-repository.
-          # The _only_ scope to select is "Access public repositories", nothing more.
-          github-token: ${{ secrets.PAT_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: 'simplesamlphp',
-              repo: 'simplesamlphp.github.io',
-              workflow_id: 'github-pages.yml',
-              ref: 'release'
-            })
+          path: ./
+          merge-multiple: true
+      - name: Get version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: Install deps
+        run: dnf install -y rpm-build rubygems; gem install fpm
+      - name: Make package
+        run: fpm --architecture noarch --after-install <(echo "ln -s /var/simplesamlphp-${VERSION} /var/simplesamlphp") --input-type tar --output-type rpm --name simplesamlphp -v $VERSION --prefix /var/ simplesamlphp-$VERSION-full.tar.gz
+        shell: bash
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            simplesamlphp-${{ env.VERSION }}-1.noarch.rpm
