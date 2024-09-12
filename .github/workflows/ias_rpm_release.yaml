@@ -19,8 +19,7 @@ jobs:
       - name: Get the tag name
         run: echo "VERS=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
       - name: Install deps
-        run: dnf install -y rpm-build
-        run: gem install fpm
+        run: dnf install -y rpm-build; gem install fpm
       # - name: Build package
       #   run: bash -x extra/ias.rpmbuild.sh $VERS
       # - name: Release
