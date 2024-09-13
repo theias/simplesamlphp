@@ -82,8 +82,6 @@ jobs:
       - name: Build tarball
         run: |
           cd ..
-          pwd
-          ls -l
           cp -R  simplesamlphp "simplesamlphp-$VERSION"
           tar --owner 0 --group 0 -cvzf "/tmp/simplesamlphp-$VERSION-${{ matrix.version }}.tar.gz" \
           "simplesamlphp-$VERSION"
