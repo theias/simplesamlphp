@@ -116,7 +116,7 @@ jobs:
       - name: Install deps
         run: dnf install -y rpm-build rubygems; gem install fpm
       - name: Make package
-        run: fpm --architecture noarch --before-install <(echo "semanage fcontext -a -t httpd_sys_content_t '/var/simplesamlphp-${{ env.VERSION }}(/.*)?' && semanage fcontext -a -t httpd_sys_rw_content_t '/var/simplesamlphp-${{ env.VERSION }}/data(/.*)?'") --after-install <(echo "unlink /var/simplesamlphp && ln -s /var/simplesamlphp-${VERSION} /var/simplesamlphp && restorecon -R /var/simplesamlphp-${VERSION}") --input-type tar --output-type rpm --name simplesamlphp -v $VERSION --prefix /var/ simplesamlphp-$VERSION-full.tar.gz
+        run: fpm --architecture noarch --before-install <(echo "semanage fcontext -m -t httpd_sys_content_t '/var/simplesamlphp-${{ env.VERSION }}(/.*)?' && semanage fcontext -m -t httpd_sys_rw_content_t '/var/simplesamlphp-${{ env.VERSION }}/data(/.*)?'") --after-install <(echo "unlink /var/simplesamlphp && ln -s /var/simplesamlphp-${VERSION} /var/simplesamlphp && restorecon -R /var/simplesamlphp-${VERSION}") --input-type tar --output-type rpm --name simplesamlphp -v $VERSION --prefix /var/ simplesamlphp-$VERSION-full.tar.gz
         shell: bash
       - name: Release
         uses: softprops/action-gh-release@v2
