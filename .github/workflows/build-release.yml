@@ -123,3 +123,4 @@ jobs:
         with:
           files: |
             simplesamlphp-${{ env.VERSION }}-1.noarch.rpm
+
