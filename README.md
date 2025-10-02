@@ -1,3 +1,16 @@
+# IAS Fork
+
+This is the IAS fork of SimpleSAMLphp that adds to the existing build workflow to produce an RPM and create a release.
+
+It includes an alternate, working RPM spec file at `extra/simplesamlphp.spec`, a build script, and GitHub Actions workflows to automatically build/release RPMs created by that spec.
+
+Our workflow should be to keep this fork in sync with upstream and to merge in from upstream when there is a tagged release.
+
+```
+# This ensures upstream is present in git config and merges in from there
+make merge-upstream
+```
+
 # SimpleSAMLphp
 
 ![Build Status](https://github.com/simplesamlphp/simplesamlphp/workflows/CI/badge.svg?branch=master)
