@@ -2,9 +2,13 @@
 
 This is the IAS fork of SimpleSAMLphp that adds to the existing build workflow to produce an RPM and create a release.
 
-It includes an alternate, working RPM spec file at `extra/simplesamlphp.spec`, a build script, and GitHub Actions workflows to automatically build/release RPMs created by that spec.
+Our modifications are:
 
-Our workflow should be to keep this fork in sync with upstream and to merge in from upstream when there is a tagged release.
+* This updated `README.md`
+* A `Makefile`
+* A modified `.github/workflows/build-release.yml` which builds an RPM and creates a GitHub release
+
+Our workflow should be to keep this fork in sync with the appropriate stable release upstream branch and to merge in from upstream when there is a tagged release.
 
 ```
 # This ensures upstream is present in git config and merges in from there

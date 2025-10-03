@@ -9,7 +9,7 @@ add-upstream:
 		git remote add upstream "$(UPSTREAM)"; \
 	fi
 
-PHONY: merge-upstream
+.PHONY: merge-upstream
 merge-upstream: add-upstream
 	git fetch --tags upstream
 	git merge upstream/simplesamlphp-2.4
