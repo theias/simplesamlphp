@@ -13,4 +13,4 @@ add-upstream:
 merge-upstream: add-upstream
 	git fetch --tags --force upstream
 	git merge upstream/simplesamlphp-2.4
-	git push --tags
+	git push --force --tags
