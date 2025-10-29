@@ -11,6 +11,6 @@ add-upstream:
 
 .PHONY: merge-upstream
 merge-upstream: add-upstream
-	git fetch --tags upstream
+	git fetch --tags --force upstream
 	git merge upstream/simplesamlphp-2.4
 	git push --tags
