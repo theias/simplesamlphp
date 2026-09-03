@@ -1,0 +1,128 @@
+---
+
+name: IAS packaging build
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    name: Build release
+    runs-on: [ubuntu-latest]
+    env:
+      COMPOSER_ROOT_VERSION: ${{ github.ref_name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['slim', 'full']
+
+    steps:
+      - name: Setup PHP, with composer and extensions
+        id: setup-php
+        # https://github.com/shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          # Should match the minimum required version for SimpleSAMLphp
+          php-version: '8.1'
+          tools: composer:v2, phive
+          extensions: mbstring, xml
+          coverage: none
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - uses: actions/checkout@v6
+
+      # Store the version, stripping any v-prefix
+      - name: Write release version
+        run: |
+          TAG=${{ github.ref_name }}
+          {
+            echo "TAG=$TAG"
+            echo "VERSION=${TAG#v}"
+          } >> "$GITHUB_ENV"
+
+      - name: Drop the version field and resync the lock hash
+        run: |
+          composer config --unset version
+          composer update --lock --no-install
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-dev --prefer-dist --optimize-autoloader
+
+      - name: Install SimpleSAMLphp modules
+        env:
+          FILE: ".github/build/${{ matrix.version }}.json"
+        run: |
+          for k in $(jq '.modules | keys | .[]' "$FILE"); do
+            module=$(jq -r ".modules[$k]" "$FILE");
+            if [ -n "$module" ];
+            then
+              repository=$(jq -r '.repository' <<< "$module");
+              v=$(jq -r '.version' <<< "$module");
+
+              composer require "$repository:$v" --update-no-dev --ignore-platform-reqs
+            fi
+          done
+
+      - name: Add composer.phar to the release
+        run: phive --no-progress install --trust-gpg-keys CBB3D576F2A0946F --copy --target ./bin composer
+
+      - name: Clean release
+        run: |
+          grep export-ignore .gitattributes | cut -d ' ' -f 1 | while IFS= read -r line
+          do
+            rm -rf "$line"
+          done
+          rm -rf .git
+
+      - name: Build tarball
+        run: |
+          cd ..
+          cp -R  simplesamlphp "simplesamlphp-$VERSION"
+          tar --owner 0 --group 0 -cvzf "/tmp/simplesamlphp-$VERSION-${{ matrix.version }}.tar.gz" \
+          "simplesamlphp-$VERSION"
+          rm -rf "simplesamlphp-$VERSION"
+
+      - name: Save tarball
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-${{ matrix.version }}
+          path: "/tmp/simplesamlphp-${{ env.VERSION }}-${{ matrix.version }}.tar.gz"
+          retention-days: 1
+
+      - name: Calculate SHA checksum (${{ matrix.version }})
+        run: sha256sum "/tmp/simplesamlphp-$VERSION-${{ matrix.version }}.tar.gz"
+
+  ias-release:
+    name: RPM release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    container:
+      image: rockylinux:9
+    needs: build
+
+    steps:
+      - name: Get artifacts from build steps
+        uses: actions/download-artifact@v8
+        with:
+          path: ./
+          merge-multiple: true
+      - name: Get version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: Install deps
+        run: dnf install -y rpm-build rubygems; gem install fpm
+      - name: Make package
+        run: fpm --architecture noarch --before-install <(echo "semanage fcontext -a -t httpd_sys_content_t '/var/simplesamlphp-${{ env.VERSION }}(/.*)?' || semanage fcontext -m -t httpd_sys_content_t '/var/simplesamlphp-${{ env.VERSION }}(/.*)?' && semanage fcontext -a -t httpd_sys_rw_content_t '/var/simplesamlphp-${{ env.VERSION }}/data(/.*)?' || semanage fcontext -m -t httpd_sys_rw_content_t '/var/simplesamlphp-${{ env.VERSION }}/data(/.*)?'") --after-install <(echo "unlink /var/simplesamlphp || true; ln -s /var/simplesamlphp-${VERSION} /var/simplesamlphp || true; restorecon -R /var/simplesamlphp-${VERSION}") --input-type tar --output-type rpm --name simplesamlphp -v $VERSION --prefix /var/ simplesamlphp-$VERSION-full.tar.gz
+        shell: bash
+      - name: Release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            simplesamlphp-${{ env.VERSION }}-1.noarch.rpm
