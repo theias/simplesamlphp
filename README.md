@@ -1,3 +1,23 @@
+# IAS Fork
+
+This is the IAS fork of SimpleSAMLphp that adds an RPM build and GitHub release to the existing workflow.
+
+Our modifications are:
+
+* This updated `README.md`
+* A `Makefile`
+* A GitHub Actions workflow that builds an RPM and creates a GitHub release
+
+To sync with upstream and push a release:
+
+```
+make
+```
+
+This fetches the upstream `simplesamlphp-2.4` branch, rebases our changes on top, overwrites the most recent tag, and pushes to origin with tags to trigger the RPM build.
+
+Our repository is configured to only run our own GitHub actions in `ias-build-release.yml`.
+
 # SimpleSAMLphp
 
 ![Build Status](https://github.com/simplesamlphp/simplesamlphp/workflows/CI/badge.svg?branch=master)
